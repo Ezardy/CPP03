@@ -7,10 +7,12 @@ static bool	claptrap_takeDamage(void);
 static bool	claptrap_beRepaired(void);
 static bool	claptrap_copy_constructor(void);
 static bool	claptrap_copy_assignment(void);
+static bool	claptrap_default_constructor(void);
 
 int	main() {
 	bool	success = true;
 	bool	(*tests[])(void) = {
+		claptrap_default_constructor,
 		claptrap_copy_constructor,
 		claptrap_copy_assignment,
 		claptrap_attack,
@@ -48,9 +50,9 @@ TEST_LOGIC_START(claptraps_attacks_each_other_heals_attacks_until_exhaust)
 		"ClapTrap Sue attacks Matt, causing 0 points of damage!\n";
 	matt.attack(sue);
 	sue.attack(matt);
+	sue.takeDamage(1);
 	matt.takeDamage(1);
 	matt.beRepaired();
-	expected += "ClapTrap Matt took 1 damage points and has 9 hit points now\n";
 TEST_LOGIC_END
 
 TEST_LOGIC_START(claptrap_copy_assignment)
@@ -138,3 +140,12 @@ TEST_LOGIC_START(claptrap_attack)
 	matt.attack(target);
 	success = matt.getEnergyPoints() == 0;
 TEST_LOGIC_END
+
+TEST_LOGIC_START(claptrap_default_constructor) {
+	ClapTrap	unnamed;
+
+	success = unnamed.getHitPoints() == 10 && unnamed.getEnergyPoints() == 10
+		&& unnamed.getAttackDamage() == 0;
+	expected = "ClapTrap default constructor was called\n"
+		"ClapTrap Unnamed's destructor was called\n";
+} TEST_LOGIC_END

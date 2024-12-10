@@ -19,17 +19,21 @@ public:
 	const std::string	&getName(void) const;
 	unsigned int		getEnergyPoints(void) const;
 	unsigned int		getHitPoints(void) const;
+	unsigned int		getAttackDamage(void) const;
 protected:
+	ClapTrap(const std::string name, const unsigned int hit,
+		const unsigned int energy, const unsigned int attack);
+
 	std::string					_name;
 	unsigned int				_hitPoints;
 	unsigned int				_energyPoints;
 	unsigned int				_attackDamage;
-private:
+
 	static const std::string	_clapTrapName;
 	static const unsigned int	_clapTrapMaxHitPoints;
 	static const unsigned int	_clapTrapAttackDamage;
 	static const unsigned int	_clapTrapMaxEnergyPoints;
-
+private:
 	virtual const std::string	&_getModelName(void) const;
 	virtual unsigned int		_getMaxHitPoints(void) const;
 	virtual unsigned int		_getAttackDamage(void) const;

@@ -19,6 +19,7 @@ public:
 	const std::string	&getName(void) const;
 	unsigned int		getEnergyPoints(void) const;
 	unsigned int		getHitPoints(void) const;
+	unsigned int		getAttackDamage(void) const;
 private:
 	std::string					_name;
 	unsigned int				_hitPoints;

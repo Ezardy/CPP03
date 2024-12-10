@@ -4,8 +4,7 @@
 
 ClapTrap::ClapTrap(void)
 	: _name("Unnamed"), _hitPoints(_maxHitPoints), _energyPoints(10) {
-	std::cout << _modelName << ' ' << _name
-		<< "'s default constructor was called\n";
+	std::cout << _modelName << " default constructor was called\n";
 }
 
 ClapTrap::ClapTrap(const std::string name)
@@ -43,13 +42,13 @@ void	ClapTrap::attack(const std::string &target) {
 }
 
 void	ClapTrap::attack(ClapTrap &target) {
+	attack(target.getName());
 	if (this != &target && _energyPoints && _hitPoints)
 		target.takeDamage(_attackDamage);
-	attack(target.getName());
 }
 
 void	ClapTrap::takeDamage(unsigned int amount) {
-	if (amount && _hitPoints) {
+	if (amount && _hitPoints && _energyPoints) {
 		std::cout << _modelName << ' ' << _name << " took ";
 		if (amount >= _hitPoints) {
 			std::cout << _hitPoints << " damage points and died\n";
@@ -88,6 +87,10 @@ unsigned int	ClapTrap::getEnergyPoints(void) const {
 
 unsigned int	ClapTrap::getHitPoints(void) const {
 	return _hitPoints;
+}
+
+unsigned int	ClapTrap::getAttackDamage(void) const {
+	return _attackDamage;
 }
 
 const unsigned int	ClapTrap::_maxHitPoints = 10;

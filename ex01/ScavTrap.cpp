@@ -2,9 +2,10 @@
 
 #include "ScavTrap.hpp"
 
-ScavTrap::ScavTrap(void) : ClapTrap() {
-	std::cout << _scavTrapName << ' ' << _name
-		<< "'s default constructor was called\n";
+ScavTrap::ScavTrap(void)
+	: ClapTrap("Unnamed", _scavTrapMaxHitPoints, _scavTrapMaxEnergyPoints,
+		_scavTrapAttackDamage) {
+	std::cout << _scavTrapName << " default constructor was called\n";
 }
 
 ScavTrap::ScavTrap(const ScavTrap &other) : ClapTrap(other) {
@@ -12,9 +13,10 @@ ScavTrap::ScavTrap(const ScavTrap &other) : ClapTrap(other) {
 		<< "'s copy constructor was called\n";
 }
 
-ScavTrap::ScavTrap(std::string name) : ClapTrap(name) {
-	std::cout << _scavTrapName << ' ' << _name
-		<< "'s constructor was called\n";
+ScavTrap::ScavTrap(std::string name)
+	: ClapTrap(name, _scavTrapMaxHitPoints, _scavTrapMaxEnergyPoints,
+		_scavTrapAttackDamage) {
+	std::cout << _scavTrapName << ' ' << _name << "'s constructor was called\n";
 }
 
 ScavTrap	&ScavTrap::operator=(const ScavTrap &other) {
@@ -42,14 +44,15 @@ unsigned int	ScavTrap::_getMaxEnergyPoints(void) const {
 	return _scavTrapMaxEnergyPoints;
 }
 
-void	ScavTrap::_printAttackMessage(const std::string &target) const {
-	std::cout << _scavTrapName << ' ' << _name << " trying to take "
+void	ScavTrap::_printAttackMessage(const std::string &target) const{
+	std::cout << _scavTrapName << ' ' << _name << " tries to take "
 		<< _attackDamage << " hit points from " << target << " because it can: "
 		<< _hitPoints << " hit points; " << _energyPoints << " energy points\n";
 }
 
 void	ScavTrap::guardGate(void) const {
-	std::cout << _getModelName() << ' ' << _name << " guards the Gate\n";
+	if (_hitPoints)
+		std::cout << _getModelName() << ' ' << _name << " guards the Gate\n";
 }
 
 const std::string	ScavTrap::_scavTrapName = "ScavTrap";

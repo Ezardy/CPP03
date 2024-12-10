@@ -12,12 +12,12 @@ public:
 	~ScavTrap(void);
 
 	void	guardGate(void) const;
-private:
+protected:
 	static const std::string	_scavTrapName;
 	static const unsigned int	_scavTrapMaxHitPoints;
 	static const unsigned int	_scavTrapAttackDamage;
 	static const unsigned int	_scavTrapMaxEnergyPoints;
-
+private:
 	const std::string	&_getModelName(void) const;
 	unsigned int		_getMaxHitPoints(void) const;
 	unsigned int		_getAttackDamage(void) const;

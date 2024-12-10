@@ -5,8 +5,7 @@
 ClapTrap::ClapTrap(void)
 	: _name("Unnamed"), _hitPoints(_getMaxHitPoints()),
 		_energyPoints(_getMaxEnergyPoints()), _attackDamage(_getAttackDamage()) {
-	std::cout << _clapTrapName << ' ' << _name
-		<< "'s default constructor was called\n";
+	std::cout << _clapTrapName << " default constructor was called\n";
 }
 
 ClapTrap::ClapTrap(const std::string name)
@@ -15,10 +14,18 @@ ClapTrap::ClapTrap(const std::string name)
 	std::cout << _clapTrapName << ' ' << name << "'s constructor was called\n";
 }
 
+ClapTrap::ClapTrap(const std::string name, const unsigned int hit,
+	const unsigned int energy, const unsigned int attack)
+		: _name(name), _hitPoints(hit), _energyPoints(energy),
+			_attackDamage(attack) {
+	std::cout << _clapTrapName << ' ' << name << "'s constructor was called\n";
+}
+
 ClapTrap::ClapTrap(const ClapTrap &other) {
 	_name = other._name;
 	_hitPoints = other._hitPoints;
 	_energyPoints = other._energyPoints;
+	_attackDamage = other._attackDamage;
 	std::cout << _clapTrapName << ' ' << other._name
 		<< "'s copy constructor was called\n";
 }
@@ -52,13 +59,13 @@ void	ClapTrap::_printAttackMessage(const std::string &target) const{
 }
 
 void	ClapTrap::attack(ClapTrap &target) {
+	attack(target.getName());
 	if (this != &target && _energyPoints && _hitPoints)
 		target.takeDamage(_attackDamage);
-	attack(target.getName());
 }
 
 void	ClapTrap::takeDamage(unsigned int amount) {
-	if (amount && _hitPoints) {
+	if (amount && _hitPoints && _energyPoints) {
 		std::cout << _getModelName() << ' ' << _name << " took ";
 		if (amount >= _hitPoints) {
 			std::cout << _hitPoints << " damage points and died\n";
@@ -97,6 +104,10 @@ unsigned int	ClapTrap::getEnergyPoints(void) const {
 
 unsigned int	ClapTrap::getHitPoints(void) const {
 	return _hitPoints;
+}
+
+unsigned int	ClapTrap::getAttackDamage(void) const {
+	return _attackDamage;
 }
 
 const std::string	&ClapTrap::_getModelName(void) const {
