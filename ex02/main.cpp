@@ -1,3 +1,4 @@
+#include "FragTrap.hpp"
 #include "ScavTrap.hpp"
 #include "test.hpp"
 
@@ -17,6 +18,15 @@ static bool	scavtrap_guardGate(void);
 static bool	scav_vs_clap(void);
 static bool	scav_vs_scav(void);
 
+static bool	fragtrap_default_constructor(void);
+static bool	fragtrap_construction_destruction(void);
+static bool	fragtrap_copy_constructor(void);
+static bool	fragtrap_copy_assignment(void);
+static bool	fragtrap_highFiveGuys(void);
+static bool	frag_vs_clap(void);
+static bool	frag_vs_scav(void);
+static bool	frag_vs_frag(void);
+
 int	main() {
 	bool	success = true;
 	bool	(*tests[])(void) = {
@@ -34,7 +44,16 @@ int	main() {
 		scavtrap_copy_assignment,
 		scavtrap_guardGate,
 		scav_vs_clap,
-		scav_vs_scav
+		scav_vs_scav,
+
+		fragtrap_default_constructor,
+		fragtrap_construction_destruction,
+		fragtrap_copy_constructor,
+		fragtrap_copy_assignment,
+		fragtrap_highFiveGuys,
+		frag_vs_clap,
+		frag_vs_scav,
+		frag_vs_frag
 	};
 	size_t	tests_count = sizeof(tests) / sizeof(tests[0]);
 	for (size_t i = 0; success && i < tests_count; i += 1) {
@@ -45,6 +64,226 @@ int	main() {
 		std::cout << "OK\n";
 	return success;
 }
+
+TEST_LOGIC_START(frag_vs_frag)
+	FragTrap	matt("Matt");
+	FragTrap	sue("Sue");
+
+	matt.attack(sue);
+	sue.attack(matt);
+	matt.highFivesGuys();
+	sue.highFivesGuys();
+	matt.beRepaired();
+	sue.beRepaired();
+	expected = "ClapTrap Matt's constructor was called\n"
+		"FragTrap Matt's constructor was called\n"
+		"ClapTrap Sue's constructor was called\n"
+		"FragTrap Sue's constructor was called\n"
+		"FragTrap Matt attacks Sue, causing 30 points of damage!\n"
+		"FragTrap Sue took 30 damage points and has 70 hit points now\n"
+		"FragTrap Sue attacks Matt, causing 30 points of damage!\n"
+		"FragTrap Matt took 30 damage points and has 70 hit points now\n"
+		"'High five, Guys!' - FragTrap Matt\n"
+		"'High five, Guys!' - FragTrap Sue\n"
+		"FragTrap Matt was repaired and has 100 hit points now\n"
+		"FragTrap Sue was repaired and has 100 hit points now\n";
+TEST_LOGIC_END
+
+TEST_LOGIC_START(frag_vs_scav)
+	FragTrap	matt("Matt");
+	ScavTrap	sue("Sue");
+
+	matt.highFivesGuys();
+	sue.attack(matt);
+	matt.beRepaired();
+	sue.attack(matt);
+	matt.beRepaired();
+	sue.attack(matt);
+	matt.beRepaired();
+	sue.attack(matt);
+	matt.beRepaired();
+	sue.attack(matt);
+	matt.beRepaired();
+	sue.attack(matt);
+	matt.beRepaired(10);
+	sue.attack(matt);
+	matt.attack(sue);
+	sue.attack(matt);
+	matt.attack(sue);
+	sue.attack(matt);
+	matt.attack(sue);
+	sue.attack(matt);
+	matt.attack(sue);
+	sue.attack(matt);
+	sue.guardGate();
+	sue.beRepaired();
+	sue.takeDamage(9);
+	std::ostringstream	ss;
+	do {
+		matt.beRepaired(1);
+		ss << "FragTrap Matt was repaired and has " << matt.getHitPoints()
+			<< " hit points now\n";
+	} while (matt.getEnergyPoints());
+	matt.beRepaired();
+	matt.attack(matt);
+	matt.takeDamage(10);
+	expected = "ClapTrap Matt's constructor was called\n"
+		"FragTrap Matt's constructor was called\n"
+		"ClapTrap Sue's constructor was called\n"
+		"ScavTrap Sue's constructor was called\n"
+		"'High five, Guys!' - FragTrap Matt\n"
+		"ScavTrap Sue tries to take 20 hit points from Matt because it can: "
+			"100 hit points; 50 energy points\n"
+		"FragTrap Matt took 20 damage points and has 80 hit points now\n"
+		"FragTrap Matt was repaired and has 100 hit points now\n"
+		"ScavTrap Sue tries to take 20 hit points from Matt because it can: "
+			"100 hit points; 49 energy points\n"
+		"FragTrap Matt took 20 damage points and has 80 hit points now\n"
+		"FragTrap Matt was repaired and has 100 hit points now\n"
+		"ScavTrap Sue tries to take 20 hit points from Matt because it can: "
+			"100 hit points; 48 energy points\n"
+		"FragTrap Matt took 20 damage points and has 80 hit points now\n"
+		"FragTrap Matt was repaired and has 100 hit points now\n"
+		"ScavTrap Sue tries to take 20 hit points from Matt because it can: "
+			"100 hit points; 47 energy points\n"
+		"FragTrap Matt took 20 damage points and has 80 hit points now\n"
+		"FragTrap Matt was repaired and has 100 hit points now\n"
+		"ScavTrap Sue tries to take 20 hit points from Matt because it can: "
+			"100 hit points; 46 energy points\n"
+		"FragTrap Matt took 20 damage points and has 80 hit points now\n"
+		"FragTrap Matt was repaired and has 100 hit points now\n"
+		"ScavTrap Sue tries to take 20 hit points from Matt because it can: "
+			"100 hit points; 45 energy points\n"
+		"FragTrap Matt took 20 damage points and has 80 hit points now\n"
+		"FragTrap Matt was repaired and has 90 hit points now\n"
+		"ScavTrap Sue tries to take 20 hit points from Matt because it can: "
+			"100 hit points; 44 energy points\n"
+		"FragTrap Matt took 20 damage points and has 70 hit points now\n"
+		"FragTrap Matt attacks Sue, causing 30 points of damage!\n"
+		"ScavTrap Sue took 30 damage points and has 70 hit points now\n"
+		"ScavTrap Sue tries to take 20 hit points from Matt because it can: "
+			"70 hit points; 43 energy points\n"
+		"FragTrap Matt took 20 damage points and has 50 hit points now\n"
+		"FragTrap Matt attacks Sue, causing 30 points of damage!\n"
+		"ScavTrap Sue took 30 damage points and has 40 hit points now\n"
+		"ScavTrap Sue tries to take 20 hit points from Matt because it can: "
+			"40 hit points; 42 energy points\n"
+		"FragTrap Matt took 20 damage points and has 30 hit points now\n"
+		"FragTrap Matt attacks Sue, causing 30 points of damage!\n"
+		"ScavTrap Sue took 30 damage points and has 10 hit points now\n"
+		"ScavTrap Sue tries to take 20 hit points from Matt because it can: "
+			"10 hit points; 41 energy points\n"
+		"FragTrap Matt took 20 damage points and has 10 hit points now\n"
+		"FragTrap Matt attacks Sue, causing 30 points of damage!\n"
+		"ScavTrap Sue took 10 damage points and died\n" + ss.str();
+TEST_LOGIC_END
+
+TEST_LOGIC_START(frag_vs_clap)
+	ClapTrap	sue("Sue");
+	FragTrap	matt("Matt");
+
+	sue.attack(matt);
+	matt.beRepaired();
+	matt.attack(sue);
+	sue.beRepaired();
+	sue.attack(matt);
+	matt.highFivesGuys();
+	success = sue.getHitPoints() == 0 && sue.getEnergyPoints() == 9
+		&& matt.getHitPoints() == 100 && matt.getEnergyPoints() == 99;
+	expected = "ClapTrap Sue's constructor was called\n"
+		"ClapTrap Matt's constructor was called\n"
+		"FragTrap Matt's constructor was called\n"
+		"ClapTrap Sue attacks Matt, causing 0 points of damage!\n"
+		"FragTrap Matt attacks Sue, causing 30 points of damage!\n"
+		"ClapTrap Sue took 10 damage points and died\n"
+		"'High five, Guys!' - FragTrap Matt\n";
+TEST_LOGIC_END
+
+TEST_LOGIC_START(fragtrap_highFiveGuys)
+	FragTrap	matt("Matt");
+	FragTrap	sue("Sue");
+
+	matt.highFivesGuys();
+	matt.takeDamage(100);
+	matt.highFivesGuys();
+	sue.highFivesGuys();
+	sue.takeDamage(99);
+	sue.beRepaired(1);
+	sue.takeDamage(1);
+	std::ostringstream	ss;
+	do {
+		sue.beRepaired(1);
+		ss << "FragTrap Sue was repaired and has " << sue.getHitPoints()
+			<< " hit points now\n";
+	} while (sue.getEnergyPoints());
+	sue.highFivesGuys();
+	expected = "ClapTrap Matt's constructor was called\n"
+		"FragTrap Matt's constructor was called\n"
+		"ClapTrap Sue's constructor was called\n"
+		"FragTrap Sue's constructor was called\n"
+		"'High five, Guys!' - FragTrap Matt\n"
+		"FragTrap Matt took 100 damage points and died\n"
+		"'High five, Guys!' - FragTrap Sue\n"
+		"FragTrap Sue took 99 damage points and has 1 hit points now\n"
+		"FragTrap Sue was repaired and has 2 hit points now\n"
+		"FragTrap Sue took 1 damage points and has 1 hit points now\n"
+		+ ss.str();
+TEST_LOGIC_END
+
+TEST_LOGIC_START(fragtrap_copy_assignment)
+	FragTrap	matt("Matt");
+	FragTrap	unnamed;
+
+	matt.takeDamage(57);
+	matt.beRepaired(1);
+	unnamed = matt;
+	success = unnamed.getName() == matt.getName() && unnamed.getHitPoints() == 44
+		&& unnamed.getEnergyPoints() == 99;
+	expected = "ClapTrap Matt's constructor was called\n"
+		"FragTrap Matt's constructor was called\n"
+		"ClapTrap Unnamed's constructor was called\n"
+		"FragTrap default constructor was called\n"
+		"FragTrap Matt took 57 damage points and has 43 hit points now\n"
+		"FragTrap Matt was repaired and has 44 hit points now\n"
+		"FragTrap Matt's copy assignment was called\n";
+TEST_LOGIC_END
+
+TEST_LOGIC_START(fragtrap_copy_constructor)
+	FragTrap	matt("Matt");
+
+	matt.takeDamage(57);
+	matt.beRepaired(1);
+	FragTrap	matt2 = matt;
+	success = matt2.getEnergyPoints() == 99 && matt2.getHitPoints() == 44;
+	expected = "ClapTrap Matt's constructor was called\n"
+		"FragTrap Matt's constructor was called\n"
+		"FragTrap Matt took 57 damage points and has 43 hit points now\n"
+		"FragTrap Matt was repaired and has 44 hit points now\n"
+		"ClapTrap Matt's copy constructor was called\n"
+		"FragTrap Matt's copy constructor was called\n";
+TEST_LOGIC_END
+
+TEST_LOGIC_START(fragtrap_construction_destruction) {
+	FragTrap	matt("Matt");
+
+	success = matt.getHitPoints() == 100 && matt.getEnergyPoints() == 100
+		&& matt.getAttackDamage() == 30;
+	expected = "ClapTrap Matt's constructor was called\n"
+		"FragTrap Matt's constructor was called\n"
+		"FragTrap Matt's destructor was called\n"
+		"ClapTrap Matt's destructor was called\n";
+} TEST_LOGIC_END
+
+TEST_LOGIC_START(fragtrap_default_constructor) {
+	FragTrap	unnamed;
+
+	success = unnamed.getHitPoints() == 100 && unnamed.getEnergyPoints() == 100
+		&& unnamed.getAttackDamage() == 30;
+	expected = "ClapTrap Unnamed's constructor was called\n"
+		"FragTrap default constructor was called\n"
+		"FragTrap Unnamed's destructor was called\n"
+		"ClapTrap Unnamed's destructor was called\n";
+} TEST_LOGIC_END
 
 TEST_LOGIC_START(scav_vs_scav)
 	ScavTrap	matt("Matt");
