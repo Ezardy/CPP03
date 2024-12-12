@@ -48,14 +48,10 @@ ClapTrap::~ClapTrap(void) {
 
 void	ClapTrap::attack(const std::string &target) {
 	if (_energyPoints && _hitPoints) {
-		_printAttackMessage(target);
+		std::cout << _clapTrapName << ' ' << _name << " attacks " << target
+			<< ", causing " << _attackDamage << " points of damage!\n";
 		_energyPoints -= 1;
 	}
-}
-
-void	ClapTrap::_printAttackMessage(const std::string &target) const{
-	std::cout << _clapTrapName << ' ' << _name << " attacks " << target
-		<< ", causing " << _attackDamage << " points of damage!\n";
 }
 
 void	ClapTrap::attack(ClapTrap &target) {

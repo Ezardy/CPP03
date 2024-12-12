@@ -11,7 +11,7 @@ public:
 	ClapTrap		&operator=(const ClapTrap &other);
 	~ClapTrap(void);
 
-	void						attack(const std::string &target);
+	virtual void				attack(const std::string &target);
 	void						attack(ClapTrap &target);
 	void						takeDamage(unsigned int amount);
 	void						beRepaired(unsigned int amount);
@@ -38,7 +38,6 @@ private:
 	virtual unsigned int		_getMaxHitPoints(void) const;
 	virtual unsigned int		_getAttackDamage(void) const;
 	virtual unsigned int		_getMaxEnergyPoints(void) const;
-	virtual void				_printAttackMessage(const std::string &target) const;
 };
 
 #endif

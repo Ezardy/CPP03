@@ -11,7 +11,9 @@ public:
 	ScavTrap	&operator=(const ScavTrap &other);
 	~ScavTrap(void);
 
-	void	guardGate(void) const;
+	void		guardGate(void) const;
+	void		attack(const std::string &target);
+	void		attack(ClapTrap &target);
 protected:
 	static const std::string	_scavTrapName;
 	static const unsigned int	_scavTrapMaxHitPoints;
@@ -22,7 +24,6 @@ private:
 	unsigned int		_getMaxHitPoints(void) const;
 	unsigned int		_getAttackDamage(void) const;
 	unsigned int		_getMaxEnergyPoints(void) const;
-	void				_printAttackMessage(const std::string &target) const;
 };
 
 #endif

@@ -28,6 +28,19 @@ ScavTrap::~ScavTrap(void) {
 	std::cout << _scavTrapName << ' ' << _name << "'s destructor was called\n";
 }
 
+void	ScavTrap::attack(const std::string &target) {
+	if (_energyPoints && _hitPoints) {
+		std::cout << _scavTrapName << ' ' << _name << " tries to take "
+			<< _attackDamage << " hit points from " << target << " because it can: "
+			<< _hitPoints << " hit points; " << _energyPoints << " energy points\n";
+		_energyPoints -= 1;
+	}
+}
+
+void	ScavTrap::attack(ClapTrap &target) {
+	ClapTrap::attack(target);
+}
+
 const std::string	&ScavTrap::_getModelName(void) const {
 	return _scavTrapName;
 }
@@ -42,12 +55,6 @@ unsigned int	ScavTrap::_getAttackDamage(void) const {
 
 unsigned int	ScavTrap::_getMaxEnergyPoints(void) const {
 	return _scavTrapMaxEnergyPoints;
-}
-
-void	ScavTrap::_printAttackMessage(const std::string &target) const{
-	std::cout << _scavTrapName << ' ' << _name << " tries to take "
-		<< _attackDamage << " hit points from " << target << " because it can: "
-		<< _hitPoints << " hit points; " << _energyPoints << " energy points\n";
 }
 
 void	ScavTrap::guardGate(void) const {
