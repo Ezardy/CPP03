@@ -265,18 +265,21 @@ TEST_LOGIC_START(diamondtrap_construction_deconstruction) {
 } TEST_LOGIC_END
 
 TEST_LOGIC_START(diamondtrap_default_constructor) {
-	DiamondTrap	unnamed;
+	const FragTrap	*unnamed = new DiamondTrap();
 
-	success = unnamed.getHitPoints() == 100 && unnamed.getEnergyPoints() == 50
-		&& unnamed.getAttackDamage() == 30;
-	expected = "ClapTrap Unnamed_clap_name's constructor was called\n"
-		"FragTrap default constructor was called\n"
-		"ScavTrap default constructor was called\n"
-		"DiamondTrap default constructor was called\n"
-		"DiamondTrap Unnamed's destructor was called\n"
-		"ScavTrap Unnamed_clap_name's destructor was called\n"
-		"FragTrap Unnamed_clap_name's destructor was called\n"
-		"ClapTrap Unnamed_clap_name's destructor was called\n";
+	if ((success = unnamed != NULL)) {
+		success = unnamed->getHitPoints() == 100 && unnamed->getEnergyPoints() == 50
+			&& unnamed->getAttackDamage() == 30;
+		expected = "ClapTrap Unnamed_clap_name's constructor was called\n"
+			"FragTrap default constructor was called\n"
+			"ScavTrap default constructor was called\n"
+			"DiamondTrap default constructor was called\n"
+			"DiamondTrap Unnamed's destructor was called\n"
+			"ScavTrap Unnamed_clap_name's destructor was called\n"
+			"FragTrap Unnamed_clap_name's destructor was called\n"
+			"ClapTrap Unnamed_clap_name's destructor was called\n";
+	}
+	delete unnamed;
 } TEST_LOGIC_END
 
 TEST_LOGIC_START(frag_vs_frag)
@@ -489,14 +492,17 @@ TEST_LOGIC_START(fragtrap_construction_destruction) {
 } TEST_LOGIC_END
 
 TEST_LOGIC_START(fragtrap_default_constructor) {
-	FragTrap	unnamed;
+	const ClapTrap	*unnamed = new FragTrap();
 
-	success = unnamed.getHitPoints() == 100 && unnamed.getEnergyPoints() == 100
-		&& unnamed.getAttackDamage() == 30;
-	expected = "ClapTrap Unnamed's constructor was called\n"
-		"FragTrap default constructor was called\n"
-		"FragTrap Unnamed's destructor was called\n"
-		"ClapTrap Unnamed's destructor was called\n";
+	if ((success = unnamed != NULL)) {
+		success = unnamed->getHitPoints() == 100 && unnamed->getEnergyPoints() == 100
+			&& unnamed->getAttackDamage() == 30;
+		expected = "ClapTrap Unnamed's constructor was called\n"
+			"FragTrap default constructor was called\n"
+			"FragTrap Unnamed's destructor was called\n"
+			"ClapTrap Unnamed's destructor was called\n";
+	}
+	delete unnamed;
 } TEST_LOGIC_END
 
 TEST_LOGIC_START(scav_vs_scav)
@@ -652,14 +658,17 @@ TEST_LOGIC_START(scavtrap_construction_destruction) {
 } TEST_LOGIC_END
 
 TEST_LOGIC_START(scavtrap_default_constructor) {
-	ScavTrap	unnamed;
+	const ClapTrap	*unnamed = new ScavTrap();
 
-	success = unnamed.getHitPoints() == 100 && unnamed.getEnergyPoints() == 50
-		&& unnamed.getAttackDamage() == 20;
-	expected = "ClapTrap Unnamed's constructor was called\n"
-		"ScavTrap default constructor was called\n"
-		"ScavTrap Unnamed's destructor was called\n"
-		"ClapTrap Unnamed's destructor was called\n";
+	if ((success = unnamed != NULL)) {
+		success = unnamed->getHitPoints() == 100 && unnamed->getEnergyPoints() == 50
+			&& unnamed->getAttackDamage() == 20;
+		expected = "ClapTrap Unnamed's constructor was called\n"
+			"ScavTrap default constructor was called\n"
+			"ScavTrap Unnamed's destructor was called\n"
+			"ClapTrap Unnamed's destructor was called\n";
+	}
+	delete unnamed;
 } TEST_LOGIC_END
 
 TEST_LOGIC_START(claptraps_attacks_each_other_heals_attacks_until_exhaust)
