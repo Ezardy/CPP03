@@ -199,14 +199,17 @@ TEST_LOGIC_START(scavtrap_construction_destruction) {
 } TEST_LOGIC_END
 
 TEST_LOGIC_START(scavtrap_default_constructor) {
-	ScavTrap	unnamed;
+	const ClapTrap	*unnamed = new ScavTrap();
 
-	success = unnamed.getHitPoints() == 100 && unnamed.getEnergyPoints() == 50
-		&& unnamed.getAttackDamage() == 20;
-	expected = "ClapTrap Unnamed's constructor was called\n"
-		"ScavTrap default constructor was called\n"
-		"ScavTrap Unnamed's destructor was called\n"
-		"ClapTrap Unnamed's destructor was called\n";
+	if ((success = unnamed != NULL)) {
+		success = unnamed->getHitPoints() == 100 && unnamed->getEnergyPoints() == 50
+			&& unnamed->getAttackDamage() == 20;
+		expected = "ClapTrap Unnamed's constructor was called\n"
+			"ScavTrap default constructor was called\n"
+			"ScavTrap Unnamed's destructor was called\n"
+			"ClapTrap Unnamed's destructor was called\n";
+	}
+	delete unnamed;
 } TEST_LOGIC_END
 
 TEST_LOGIC_START(claptraps_attacks_each_other_heals_attacks_until_exhaust)
